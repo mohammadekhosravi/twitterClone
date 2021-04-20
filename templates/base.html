@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>{% block title %}Twitter Clone{% endblock title %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "css/style.min.css" %}">
+    <link rel="shortcut icon" href="{% static "favicon.ico" %}">
+    <link rel="icon" href="{% static "favicon.ico" %}">
+    {% block head %}
+    {% endblock head %}
+  </head>
+
+  <body>
+    {% block content %}
+    {% endblock content %}
+  </body>
+</html>

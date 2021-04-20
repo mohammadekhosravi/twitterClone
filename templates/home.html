@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h1 class="bg-dark">Hello twitter</h1>
+  <ul>
+    <li><a href="{% url 'account_login' %}">Login</a></li>
+    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    <li><a href="{% url 'account_signup' %}">Signup</a></li>
+  </ul>
+
+{% endblock content %}
