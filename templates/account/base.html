@@ -1,0 +1,51 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>{% block head_title %}Account{% endblock %}</title>
+    <meta name="description" content="Twitter clone">
+    <meta name="author" content="Mohmmad Khosravi">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "css/style.min.css" %}">
+    <link rel="shortcut icon" href="{% static "favicon.ico" %}">
+    <link rel="icon" href="{% static "favicon.ico" %}">
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- <div> -->
+    <!--   <strong>Menu:</strong> -->
+    <!--   <ul> -->
+    <!--     {% if user.is_authenticated %} -->
+    <!--     <a href="{% url 'account_email' %}">Change E-mail</a></li> -->
+    <!--     <li><a href="{% url 'account_logout' %}">Sign Out</a></li> -->
+    <!--     {% else %} -->
+    <!--     <li><a href="{% url 'account_login' %}">Sign In</a></li> -->
+    <!--     <li><a href="{% url 'account_signup' %}">Sign Up</a></li> -->
+    <!--     {% endif %} -->
+    <!--   </ul> -->
+    <!-- </div> -->
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+  </body>
+</html>

@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # 3rd party
+
+    # For user account management
     'allauth',
     'allauth.account',
+    # For widget tweaking
+    'widget_tweaks',
 
     # Local
 ]
@@ -138,6 +142,7 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#---------------------------------------------------------------------------
 # For allauth
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -163,4 +168,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 DEFAULT_FROM_EMAIL = 'admin@twitterclone.com'
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_SESSION_REMEMBER = None
+ACCOUNT_SESSION_REMEMBER = True
+#--------------------------------------------------------------------------------
