@@ -26,8 +26,9 @@ urlpatterns = [
     # User management
     path('accounts/', include('allauth.urls')),
 
-    path('', TemplateView.as_view(template_name='home.html'),
-         name='home')
+    # Pages app
+    path('', include('pages.urls')),
+
 ]
 
 if settings.DEBUG:

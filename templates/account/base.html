@@ -17,35 +17,37 @@
     {% endblock %}
   </head>
   <body>
-    {% block body %}
-
     {% if messages %}
-    <div>
-      <strong>Messages:</strong>
-      <ul>
-        {% for message in messages %}
-        <li>{{message}}</li>
-        {% endfor %}
-      </ul>
-    </div>
+      {% for message in messages %}
+        <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-blue-500">
+          <span class="text-xl inline-block mr-5 align-middle">
+            <i class="fas fa-bell"></i>
+          </span>
+          <span class="inline-block align-middle mr-8">
+            {{ message }}
+          </span>
+          <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onclick="closeAlert(event)">
+            <span>×</span>
+          </button>
+        </div>
+      {% endfor %}
     {% endif %}
 
-    <!-- <div> -->
-    <!--   <strong>Menu:</strong> -->
-    <!--   <ul> -->
-    <!--     {% if user.is_authenticated %} -->
-    <!--     <a href="{% url 'account_email' %}">Change E-mail</a></li> -->
-    <!--     <li><a href="{% url 'account_logout' %}">Sign Out</a></li> -->
-    <!--     {% else %} -->
-    <!--     <li><a href="{% url 'account_login' %}">Sign In</a></li> -->
-    <!--     <li><a href="{% url 'account_signup' %}">Sign Up</a></li> -->
-    <!--     {% endif %} -->
-    <!--   </ul> -->
-    <!-- </div> -->
+    {% block body %}
     {% block content %}
     {% endblock %}
     {% endblock %}
     {% block extra_body %}
     {% endblock %}
+
+    <script>
+      function closeAlert(event){
+              let element = event.target;
+              while(element.nodeName !== "BUTTON"){
+                      element = element.parentNode;
+                    }
+              element.parentNode.parentNode.removeChild(element.parentNode);
+            }
+    </script>
   </body>
 </html>

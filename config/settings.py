@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     # Local
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
