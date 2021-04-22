@@ -1,0 +1,43 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Signup{% endblock %}
+
+{% block content %}
+
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-700 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-300 leading-9">
+      Create new account
+    </h2>
+    <p class="mt-2 text-sm text-center text-gray-400 leading-5 max-w">
+      Or
+      <a href="{{ login_url }}" class="font-medium text-indigo-400 hover:text-indigo-300 focus:outline-none focus:underline transition ease-in-out duration-150">
+        login to existing account
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+      <form method="POST" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+
+        {% include 'base_form.html' with form=form %}
+
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <div class="mt-6">
+          <span class="block w-full rounded-md shadow-sm">
+            <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+              Sign up
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

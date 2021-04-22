@@ -1,0 +1,53 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>{% block head_title %}Account{% endblock %}</title>
+    <meta name="description" content="Twitter clone">
+    <meta name="author" content="Mohmmad Khosravi">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "css/style.min.css" %}">
+    <link rel="shortcut icon" href="{% static "favicon.ico" %}">
+    <link rel="icon" href="{% static "favicon.ico" %}">
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="text-white px-6 py-4 border-0 rounded relative mb-1 bg-blue-500">
+          <span class="text-xl inline-block mr-5 align-middle">
+            <i class="fas fa-bell"></i>
+          </span>
+          <span class="inline-block align-middle mr-8">
+            {{ message }}
+          </span>
+          <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onclick="closeAlert(event)">
+            <span>×</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block body %}
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+
+    <script>
+      function closeAlert(event){
+              let element = event.target;
+              while(element.nodeName !== "BUTTON"){
+                      element = element.parentNode;
+                    }
+              element.parentNode.parentNode.removeChild(element.parentNode);
+            }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+{% extends "account/base.html" %}
+{% load widget_tweaks %}
+
+{% block head_title %}Sign in{% endblock %}
+
+{% block content %}
+
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-700 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-300 leading-9">
+      Sign in to your account
+    </h2>
+    <p class="mt-2 text-sm text-center text-gray-400 leading-5 max-w">
+      Or
+      <a href="{{ signup_url }}" class="font-medium text-indigo-400 hover:text-indigo-300 focus:outline-none focus:underline transition ease-in-out duration-150">
+        create a new account
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+      <form method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+          <div class="relative px-3 py-3 mb-4 border rounded text-red-darker border-red-dark bg-red-lighter" role="alert">
+            {% for error in form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% for field in form.visible_fields %}
+          <div class="mb-4">
+            {{ field.label_tag }}
+
+            {% if form.is_bound %}
+              {% if field.errors %}
+                {% render_field field class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-grey-darker border border-grey rounded bg-red-dark" %}
+                {% for error in field.errors %}
+                  <div class="inhidden mt-1 text-sm text-green">
+                    {{ error }}
+                  </div>
+                {% endfor %}
+              {% else %}
+                {% render_field field class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-grey-darker border border-grey rounded bg-green-dark" %}
+              {% endif %}
+            {% else %}
+              {% render_field field class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-grey-darker border border-grey rounded" %}
+            {% endif %}
+            {% if field.help_text %}
+              <small class="block mt-1 text-grey">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+
+        <div class="flex items-center justify-between mt-6">
+          <div class="text-sm leading-5">
+            <a href="{% url 'account_reset_password' %}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+              Forgot your password?
+            </a>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <span class="block w-full rounded-md shadow-sm">
+            <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+              Sign in
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}"E-mail Addresses"{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-600 sm:px-6 lg:px-8">
+      <div class="px-8 py-12 bg-white shadow sm:rounded-lg sm:px-10">
+        {% if user.emailaddress_set.all %}
+          <p class="text-3xl font-normal leading-normal mt-0 mb-2 text-gray-800">The following e-mail addresses are associated with your account:</p>
+
+<form action="{% url 'account_email' %}" class="email_list" method="post">
+{% csrf_token %}
+<fieldset class="blockLabels">
+
+  {% for emailaddress in user.emailaddress_set.all %}
+<div class="ctrlHolder">
+      <label for="email_radio_{{forloop.counter}}" class="text-gray-800 text-xl {% if emailaddress.primary %}primary_email{%endif%}">
+
+      <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+
+{{ emailaddress.email }}
+    {% if emailaddress.verified %}
+    <span class="mt-3 text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-pink-600 bg-pink-200 uppercase last:mr-0 mr-1">Verified</span>
+    {% else %}
+    <span class="mt-3 text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-pink-600 bg-pink-200 uppercase last:mr-0 mr-1">Unverified</span>
+    {% endif %}
+      {% if emailaddress.primary %}<span class="mt-3 text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-pink-600 bg-pink-200 uppercase last:mr-0 mr-1">Primary</span>{% endif %}
+</label>
+</div>
+  {% endfor %}
+
+<div class="buttonHolder mt-4 bg-gray-300">
+      <button class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit" name="action_primary" >Make Primary</button>
+      <button class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit" name="action_send" >Re-send Verification</button>
+      <button class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit" name="action_remove" >Remove</button>
+</div>
+
+</fieldset>
+</form>
+
+{% else %}
+  <p class="text-lg font-light leading-relaxed mt-6 mb-4 text-gray-800"><span class="text-lg font-semibold inline-block py-1 px-2 uppercase rounded-full text-pink-600 bg-pink-200 uppercase last:mr-0 mr-1">Warning:</span> You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc.</p>
+
+{% endif %}
+
+<div class="mt-8">
+  {% if can_add_email %}
+    <h6 class="text-2xl font-normal leading-normal mt-0 mb-2 text-gray-800">Add E-mail Address</h6>
+
+    <form method="post" action="{% url 'account_email' %}" class="add_email">
+        {% csrf_token %}
+        {% include "base_form.html" with form=form %}
+        <button name="action_add" type="submit" class="flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">Add E-mail</button>
+    </form>
+  {% endif %}
+</div>
+      </div>
+  </div>
+
+{% endblock %}
+
+
+{% block extra_body %}
+<script type="text/javascript">
+(function() {
+  var message = "Do you really want to remove the selected e-mail address?";
+  var actions = document.getElementsByName('action_remove');
+  if (actions.length) {
+    actions[0].addEventListener("click", function(e) {
+      if (! confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  }
+})();
+</script>
+{% endblock %}
