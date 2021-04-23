@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-600 sm:px-6 lg:px-8">
+    <div class="px-8 py-12 bg-white shadow sm:rounded-lg sm:px-10">
+      <p class="text-2xl font-light leading-relaxed mt-6 ml-4 mb-4 text-gray-800">
+      A twitter clone site which mimic it's core functionality. written by Mohammad Khosravi.
+      </p>
+
+
+
+<div class="flex flex-wrap" id="tabs-id">
+  <div class="w-full">
+    <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+      <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-gray-200 bg-gray-600" onclick="changeAtiveTab(event,'tab-profile')">
+          <i class="fab fa-linkedin text-xl"></i> Linkedin
+        </a>
+      </li>
+      <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-gray-200 bg-gray-600" onclick="changeAtiveTab(event,'tab-settings')">
+          <i class="fas fa-at text-xl"></i> Email
+        </a>
+      </li>
+      <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-gray-200 bg-gray-600" onclick="changeAtiveTab(event,'tab-options')">
+          <i class="fab fa-github text-xl"></i> Github
+        </a>
+      </li>
+    </ul>
+    <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+      <div class="px-4 py-5 flex-auto">
+        <div class="tab-content tab-space">
+          <div class="block" id="tab-profile">
+            <p class="text-xl font-light leading-relaxed mt-6 mb-4 text-gray-800">Mohammad Khosravi @ 
+              <span class="text-lg font-semibold inline-block py-1 px-2 rounded text-blue-500 bg-pink-200 uppercase last:mr-0 mr-1">
+              <a target="_blank" href="https://www.linkedin.com/in/mohammadekhosravi/">
+                Linkedin
+              </a>
+            </span>
+            </p>
+          </div>
+          <div class="hidden" id="tab-settings">
+            <p class="text-xl font-light leading-relaxed mt-6 mb-4 text-gray-800">My Email: 
+              <span class="text-lg font-semibold inline-block py-1 px-2 rounded text-blue-500 bg-pink-200 uppercase last:mr-0 mr-1">
+                mohammadekhosravi@yahoo.com
+            </span>
+            </p>
+          </div>
+          <div class="hidden" id="tab-options">
+            <p class="text-xl font-light leading-relaxed mt-6 mb-4 text-gray-800">Mohammad Khosravi @ 
+              <span class="text-lg font-semibold inline-block py-1 px-2 rounded text-blue-500 bg-pink-200 uppercase last:mr-0 mr-1">
+              <a target="_blank" href="https://www.github.com/mohammadekhosravi/">
+                Github
+              </a>
+            </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+  function changeAtiveTab(event,tabID){
+    let element = event.target;
+    while(element.nodeName !== "A"){
+      element = element.parentNode;
+    }
+    ulElement = element.parentNode.parentNode;
+    aElements = ulElement.querySelectorAll("li > a");
+    tabContents = document.getElementById("tabs-id").querySelectorAll(".tab-content > div");
+    for(let i = 0 ; i < aElements.length; i++){
+      aElements[i].classList.remove("text-gray-200");
+      aElements[i].classList.remove("bg-gray-600");
+      aElements[i].classList.add("text-gray-200");
+      aElements[i].classList.add("bg-gray-600");
+      tabContents[i].classList.add("hidden");
+      tabContents[i].classList.remove("block");
+    }
+    element.classList.remove("text-gray-200");
+    element.classList.remove("bg-gray-600");
+    element.classList.add("text-gray-200");
+    element.classList.add("bg-gray-600");
+    document.getElementById(tabID).classList.remove("hidden");
+    document.getElementById(tabID).classList.add("block");
+  }
+  </script>
+
+{% endblock content %}
