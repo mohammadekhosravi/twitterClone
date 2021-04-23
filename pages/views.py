@@ -6,5 +6,5 @@ class HomePageView(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
 
 
-class AboutPageView(TemplateView):
+class AboutPageView(LoginRequiredMixin, TemplateView):
     template_name = 'about.html'
