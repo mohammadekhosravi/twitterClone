@@ -11,12 +11,18 @@
     <link rel="stylesheet" href="{% static "css/style.min.css" %}">
     <link rel="shortcut icon" href="{% static "favicon.ico" %}">
     <link rel="icon" href="{% static "favicon.ico" %}">
+
+    <!-- Custom js -->
+    <script src="{% static 'js/base.js' %}" defer></script>
+    {% block scripts %}
+    {% endblock scripts %}
     {% block head %}
     {% endblock head %}
   </head>
 
   <body>
 
+    {% block messages %}
     {% if messages %}
       {% for message in messages %}
         <div class="text-white px-6 py-4 border-0 rounded relative mb-1 bg-blue-500">
@@ -32,8 +38,10 @@
         </div>
       {% endfor %}
     {% endif %}
+    {% endblock messages %}
 
 
+{% block navbar %}
 <div class="flex flex-wrap">
   <div class="w-full">
     <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gray-600">
@@ -83,42 +91,21 @@
         </div>
       </div>
     </nav>
+    </div>
   </div>
+{% endblock navbar %}
+
+<div class="flex flex-row flex-wrap overflow-hidden h-screen w-screen">
+  <div class="bg-red-500 w-3/12">1</div>
+  <div class="bg-blue-500 w-6/12">2</div>
+  <div class="bg-gray-800 w-3/12">3</div>
 </div>
 
     {% block content %}
     {% endblock content %}
 
-    <script>
-      function closeAlert(event){
-              let element = event.target;
-              while(element.nodeName !== "BUTTON"){
-                      element = element.parentNode;
-                    }
-              element.parentNode.parentNode.removeChild(element.parentNode);
-            }
-
-      function toggleNavbar(collapseID){
-              document.getElementById(collapseID).classList.toggle("hidden");
-              document.getElementById(collapseID).classList.toggle("flex");
-            }
-    </script>
     <script src="https://kit.fontawesome.com/faa629c1cc.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
-    <script>
-      function openDropdown(event,dropdownID){
-        let element = event.target;
-        while(element.nodeName !== "BUTTON"){
-          element = element.parentNode;
-        }
-        var popper = Popper.createPopper(element, document.getElementById(dropdownID), {
-          placement: 'bottom-start'
-        });
-        document.getElementById(dropdownID).classList.toggle("hidden");
-        document.getElementById(dropdownID).classList.toggle("block");
-      }
-    </script>
-
-
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   </body>
 </html>
