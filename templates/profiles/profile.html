@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block tweets %}
+  <div class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">
+    <div class="flex">
+      <img src="{{ obj.profile.avatar.url }}" class="mt-6 ml-6 mb-6 h-40 w-40 rounded-full object-cover"/>
+      <div class="ml-10">
+        <div class="flex items-center">
+          <h2 class="block leading-relaxed font-light text-gray-700 text-3xl mb-4">{{ obj.get_full_name }}</h2>
+        </div>
+        <ul class="flex justify-content-around items-center mt-4">
+          <li>
+            <span class="block text-base flex"><span class="font-bold mr-2">23 </span> tweets</span>
+          </li>
+          <li>
+            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">102k </span> followers</span>
+          </li>
+          <li>
+            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">654 </span> following</span>
+          </li>
+        </ul>
+        <br>
+        <div class="">
+          <p class="text-xl font-light leading-relaxed mt-6 text-gray-800">
+          {{ obj.profile.bio }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock tweets %}

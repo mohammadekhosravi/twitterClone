@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # User profiles
-    path('accounts/', include('profiles.urls')),
+    path('my/', include('profiles.urls')),
 
     # User management
     path('accounts/', include('allauth.urls')),

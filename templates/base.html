@@ -41,9 +41,9 @@
     {% endblock messages %}
 
 
-{% block navbar %}
 <div class="flex flex-wrap">
   <div class="w-full">
+{% block navbar %}
     <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gray-600">
       <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
@@ -62,11 +62,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
-                Profile
-              </a>
-            </li>
-            <li class="nav-item">
               <div class="flex flex-wrap">
                 <div class="w-full sm:w-6/12 md:w-4/12 px-4">
                   <div class="relative inline-flex align-middle w-full">
@@ -74,6 +69,9 @@
                       Settings
                     </button>
                     <div class="hidden bg-white  text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1" style="min-width:12rem" id="dropdown-id">
+                      <a href="{% url "edit_profile" %}" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
+                        Edit Profile
+                      </a>
                       <a href="{% url "account_email" %}" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
                         Email
                       </a>
@@ -91,18 +89,44 @@
         </div>
       </div>
     </nav>
-    </div>
+      </div>
   </div>
 {% endblock navbar %}
 
-<div class="flex flex-row flex-wrap overflow-hidden h-screen w-screen">
-  <div class="bg-red-500 w-3/12">1</div>
-  <div class="bg-blue-500 w-6/12">2</div>
-  <div class="bg-gray-800 w-3/12">3</div>
+{% block sidebar %}
+<div class="flex">
+  <div class="h-screen sticky p-8 bg-gray-700 flex-col" style="width: 325px;">
+    <!-- Note: add overflow-y-scroll if sidebar content is longer than page -->
+    <div class="col-span-12 w-full px-3 py-6 justify-center flex space-x-4 border-b border-solid md:space-x-0 md:space-y-4 md:flex-col md:col-span-2 md:justify-start ">
+      <a href="{% url "home" %}" class="text-l p-4 bg-indigo-100 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">
+        <i class="fas fa-home mr-4"></i>
+        Home
+      </a>
+      <a href="#" class="text-l p-4 bg-indigo-100 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">
+        <i class="fas fa-bell mr-4"></i>
+        Notifications
+      </a>
+      <a href="{% url 'profile' request.user.username %}" class="text-l p-4 bg-indigo-100 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">
+        <i class="fas fa-user mr-4"></i>
+        Profile
+      </a>
+    </div>
+  </div>
+  
+  <div class="flex-grow bg-gray-400">
+    {% block tweets %}
+    {% endblock tweets %}
+  </div>
+  <div class="h-screen sticky p-4 bg-gray-700" style="width: 325px;">
+    <!-- Note: add overflow-y-scroll if sidebar content is longer than page -->
+  </div>
+
 </div>
 
-    {% block content %}
-    {% endblock content %}
+{% endblock sidebar %}
+
+{% block content %}
+{% endblock content %}
 
     <script src="https://kit.fontawesome.com/faa629c1cc.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
