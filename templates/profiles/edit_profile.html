@@ -1,33 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block sidebar %}
-{% endblock sidebar %}
 {% block content %}
-  <div class="w-full relative shadow-2xl rounded overflow-hidden">
-  <div class="top h-64 w-full bg-blue-600 overflow-hidden relative" >
-    <img src="https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="" class="bg w-full h-full object-cover object-center absolute z-0">
-    <div class="flex flex-col justify-center items-center relative h-full bg-black bg-opacity-50 text-white">
-      <img src="{{ user.profile.avatar.url }}" class="h-36 w-36 object-cover rounded-full">
-      <h1 class="text-2xl font-semibold">{{ user.get_full_name|default:user.username }}</h1>
-      <h4 class="text-sm font-semibold">Joined Since {{ user.profile.created.year }}</h4>
-    </div>
-  </div>
-  <div class="grid grid-cols-12 bg-white ">
-    <div class="col-span-12 md:border-solid md:border-l md:border-black md:border-opacity-25 h-full pb-12 md:col-span-10">
-      <div class="px-4 pt-4">
-        <form  method="POST" enctype="multipart/form-data">
-          {% csrf_token %} 
 
-          {% include "base_form.html" with form=user_form %}
+<div class="p-relative h-screen" style="background-color: #15202b">
+    <div class="flex justify-center">
+        {% include "includes/left_sidebar.html" %}
+        <main role="main">
+          <div class="flex" style="width: 990px;">
+            <section class="w-8/12 border border-y-0 border-gray-800" style="max-width:800px;">
+              <!--Content (Center)-->
+              <aside>
+                <div class="flex">
+                  <div class="flex-1 mx-2">
+                    <h2 class="px-4 py-2 text-xl font-semibold text-white">{{ user.get_full_name|default:user.username }}'s Profile</h2>
+                  </div>
+                </div>
+              </aside>
+              <hr class="border-gray-800 mb-4">
+                <!-- HERE -->
+                <div class="m-4">
+                <form  method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
 
-          {% include "base_form.html" with form=profile_form %}
-          <button class="w-1/6 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit">
-            Save Changes
-          </button>
-        </form>
+                  {% include "base_form.html" with form=user_form %}
+
+                  {% include "base_form.html" with form=profile_form %}
+
+                  <button class="mt-4flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded max-w-max border bg-transparent border-blue-500 text-blue-500 hover:border-blue-800 hover:border-blue-800 flex items-center hover:shadow-lg font-bold py-2 px-4 rounded-full mr-0 ml-auto">
+                Save Changes
+                  </button>
+                </form>
+                </div>
+                </section>
+                {% include "includes/right_sidebar.html" %}
+            </div>
+          </main>
       </div>
-    </div>
   </div>
-</div>
-{% endblock content %}
+  {% include "includes/style.html" %}
+
+  {% endblock content %}

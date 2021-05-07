@@ -16,7 +16,7 @@ def update_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'Your profile was successfully updated!')
-            return redirect('edit_profile')
+            return redirect('profile', request.user)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -32,7 +32,30 @@ def update_profile(request):
 def profile(request, username):
     obj = get_object_or_404(get_user_model(),
                             username=username)
+    book_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     return render(request, 'profiles/profile.html', {
         'obj': obj,
+        'book_list': book_list,
+    })
+
+@login_required
+def profile_following(request, username):
+    obj = get_object_or_404(get_user_model(),
+                            username=username)
+    following = obj.following.all()
+
+    return render(request, 'profiles/following.html', {
+        'obj': obj,
+        'following': following
+    })
+
+def profile_followers(request, username):
+    obj = get_object_or_404(get_user_model(),
+                            username=username)
+    followers = obj.followers.all()
+
+    return render(request, 'profiles/followers.html', {
+        'obj': obj,
+        'followers': followers,
     })

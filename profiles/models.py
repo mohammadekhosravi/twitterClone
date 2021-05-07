@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='users/avatars/', default='avatar.png')
+    header = models.ImageField(upload_to='users/headers/', default='header.jpg')
     bio = models.CharField(max_length= 240, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

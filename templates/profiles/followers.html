@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="p-relative h-screen" style="background-color: #15202b">
+    <div class="flex justify-center">
+        {% include "includes/left_sidebar.html" %}
+        <main role="main">
+          <div class="flex" style="width: 990px;">
+            <section class="w-3/5 border border-y-0 border-gray-800" style="max-width:600px;">
+              <!--Content (Center)-->
+              <aside>
+                <div class="flex">
+                  <div class="flex-1 mx-2">
+                    <h2 class="px-4 py-2 text-xl font-semibold text-white">{{ obj.get_full_name|default:obj.username }}</h2>
+                  </div>
+                </div>
+              </aside>
+              <!-- following/followers link -->
+              <div class="flex">
+                <a class="flex-1" href="{% url "profile_following" username=obj.username %}">
+                <div class="mx-2 rounded-sm hover:bg-gray-700">
+                  <h2 class="px-4 py-2 text-xl font-semibold text-white">Following</h2>
+                </div>
+                </a>
+                <a class="flex-1" href="{% url "profile_followers" username=obj.username %}">
+                <div class="flex-1 mx-2 rounded-sm hover:bg-gray-700">
+                  <h2 class="px-4 py-2 text-xl font-semibold text-white">Followers</h2>
+                </div>
+                </a>
+              </div>
+              <hr class="border-gray-800">
+              <!-- following list -->
+              {% for person in followers %}
+                <a href="{% url "profile" username=person.username %}">
+              <div class="flex rounded-lg bg-dim-700 overflow-hidden shadow-lg m-2">
+                <div class="flex-1 ">
+                  <div class="flex items-center w-48">
+                    <div>
+                      <img class="inline-block h-12 w-12 rounded-full ml-4 mt-3" src="{{ person.profile.avatar.url }}" alt="">
+                    </div>
+                    <div class="ml-3 mt-3">
+                      <p class="text-base leading-6 font-medium text-white">
+                      {{ person.first_name|default:person.username }}
+                      </p>
+                      <p class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                      @{{ person.username }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                </a>
+                <div class="flex-1 px-4 py-2 m-2">
+                  <a href="" class=" float-right">
+                    <button class="bg-transparent hover:bg-gray-800 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-full">
+                      Follow
+                    </button>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+                <!-- HERE -->
+                </section>
+                {% include "includes/right_sidebar.html" %}
+            </div>
+          </main>
+      </div>
+  </div>
+  {% include "includes/style.html" %}
+
+  {% endblock content %}
