@@ -13,10 +13,10 @@
             <span class="block text-base flex"><span class="font-bold mr-2">23 </span> tweets</span>
           </li>
           <li>
-            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">102k </span> followers</span>
+            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">{{ obj.followers.count }} </span> followers</span>
           </li>
           <li>
-            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">654 </span> following</span>
+            <span class="cursor-pointer block text-base flex ml-5"><span class="font-bold mr-2">{{ obj.following.count }} </span> following</span>
           </li>
         </ul>
         <br>
@@ -28,4 +28,5 @@
       </div>
     </div>
   </div>
+  <a href="{{ obj.get_absolute_url }}">Working</a>
 {% endblock tweets %}

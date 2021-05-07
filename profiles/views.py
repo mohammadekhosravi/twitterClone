@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -30,7 +30,8 @@ def update_profile(request):
 
 @login_required
 def profile(request, username):
-    obj = get_user_model().objects.get(username=username)
+    obj = get_object_or_404(get_user_model(),
+                            username=username)
 
     return render(request, 'profiles/profile.html', {
         'obj': obj,

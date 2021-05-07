@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 from environs import Env
 
 # Set up environs
@@ -164,3 +166,7 @@ DEFAULT_FROM_EMAIL = 'admin@twitterclone.com'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_SESSION_REMEMBER = True
 #--------------------------------------------------------------------------------
+# Canonical url for users
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('profile', args=[u.username])
+}
