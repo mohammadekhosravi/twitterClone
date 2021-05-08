@@ -82,7 +82,12 @@ def user_follow(request):
             else:
                 Contact.objects.filter(user_from=request.user,
                 user_to=user).delete()
-            return JsonResponse({'status': 'ok'})
+            followers_count = user.followers.all().count()
+            following_count = user.following.all().count()
+            return JsonResponse({'status': 'ok',
+            'following_count': str(following_count),
+            'followers_count': str(followers_count),
+            })
         except get_user_model().DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error'})

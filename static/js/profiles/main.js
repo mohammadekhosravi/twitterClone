@@ -1,8 +1,10 @@
 const followBtn = document.getElementById("follow-button");
 const userId = followBtn.getAttribute('data-id');
-const userAction = followBtn.getAttribute('data-action');
+let userAction = followBtn.getAttribute('data-action');
 const url = followBtn.getAttribute("data-url");
-const csrf = document.getElementsByName('csrfmiddlewaretoken')
+const csrf = document.getElementsByName('csrfmiddlewaretoken');
+let followersCount = document.getElementById("fuck");
+
 
 const getCookie =(name) => {
     let cookieValue = null;
@@ -31,11 +33,23 @@ followBtn.addEventListener("click", (e) => {
             id: userId,
             action: userAction,
         },
-        success: function(respose){
-            if (respose.status == 'ok'){
-                followBtn.innerText = "Following";
+        success: function(response){
+            pervious_action = userAction;
+            if (response.status == 'ok'){
+                followBtn.innerText = pervious_action == 'follow' ? "Following" : "Follow";
+                if(pervious_action == 'follow') {
+                    followBtn.classList.replace("bg-transparent", "bg-blue-500");
+                    followBtn.classList.replace("text-blue-500", "text-white");
+                }
+                else {
+                    followBtn.classList.replace("bg-blue-500", "bg-transparent");
+                    followBtn.classList.replace("text-white", "text-blue-500");
+                    followersCount.innerText -= 1;
+                }
+                followersCount.innerText = response.followers_count;
+                userAction = pervious_action == 'follow' ? "unfollow" : "follow";
             }
-            else if(respose.status == 'error'){
+            else if(response.status == 'error'){
                 alert("Oops! something went wrong!");
             }
         },
