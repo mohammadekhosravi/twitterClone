@@ -30,7 +30,7 @@ class Contact(models.Model):
 
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('created',)
 
     def __str__(self):
         return f'{self.user_from} follows {self.user_to}'
