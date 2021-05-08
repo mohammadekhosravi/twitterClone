@@ -2,7 +2,26 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
 
-from .views import HomePageView, AboutPageView
+from .views import HomePageView, AboutPageView, HomeRedirectView
+
+
+class HomeRedirectTests(TestCase):
+
+    def setUp(self):
+        self.client.force_login(get_user_model().objects.get_or_create(username='testuser')[0])
+        url = reverse('home_redirect')
+        self.response = self.client.get(url, follow=True)
+
+    def test_root_url_redirects_to_homepage_view(self):
+        expected_url = reverse('home')
+        self.assertRedirects(self.response, expected_url=expected_url, status_code=301, target_status_code=200)
+
+    def test_homeredirect_url_resolves_homeredirectview(self):
+        view = resolve(reverse('home_redirect'))
+        self.assertEqual(
+            view.func.__name__,
+            HomeRedirectView.as_view().__name__
+        )
 
 
 class HomePageTests(TestCase):

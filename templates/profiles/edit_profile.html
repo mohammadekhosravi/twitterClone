@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Edit {{ user.username|capfirst }} Profile
+{% endblock title %}
+
+{% block content %}
+
+<div class="p-relative h-screen" style="background-color: #15202b">
+    <div class="flex justify-center">
+        {% include "includes/left_sidebar.html" %}
+        <main role="main">
+          <div class="flex" style="width: 990px;">
+            <section class="w-8/12 border border-y-0 border-gray-800" style="max-width:800px;">
+              <!--Content (Center)-->
+              <aside>
+                <div class="flex">
+                  <div class="flex-1 mx-2">
+                    <h2 class="px-4 py-2 text-xl font-semibold text-white">{{ user.get_full_name|default:user.username }}'s Profile</h2>
+                  </div>
+                </div>
+              </aside>
+              <hr class="border-gray-800 mb-4">
+                <!-- HERE -->
+                <div class="m-4">
+                <form  method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  {% include "base_form.html" with form=user_form %}
+
+                  {% include "base_form.html" with form=profile_form %}
+
+                  <button class="mt-4flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded max-w-max border bg-transparent border-blue-500 text-blue-500 hover:border-blue-800 hover:border-blue-800 flex items-center hover:shadow-lg font-bold py-2 px-4 rounded-full mr-0 ml-auto">
+                Save Changes
+                  </button>
+                </form>
+                </div>
+                </section>
+                {% include "includes/right_sidebar.html" %}
+            </div>
+          </main>
+      </div>
+  </div>
+  {% include "includes/style.html" %}
+
+  {% endblock content %}
