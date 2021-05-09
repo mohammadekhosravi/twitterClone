@@ -55,6 +55,9 @@ INSTALLED_APPS = [
 
     # For activity stream
     'actions.apps.ActionsConfig',
+
+    # For tweet functionality
+    'tweets.apps.TweetsConfig',
 ]
 
 MIDDLEWARE = [

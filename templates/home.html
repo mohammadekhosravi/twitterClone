@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block scripts%}
+<script src="{% static "js/tweets/modal.js" %}" defer></script>
+{% endblock scripts%}
+
 {% block content %}
 
 <div class="p-relative h-screen" style="background-color: #15202b">
