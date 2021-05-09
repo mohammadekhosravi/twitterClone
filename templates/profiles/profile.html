@@ -3,6 +3,7 @@
 
 {% block scripts %}
 <script src="{% static "js/profiles/main.js" %}" defer></script>
+<script src="{% static "js/tweets/modal.js" %}" defer></script>
 {% endblock scripts %}
 {% block title %}
   {{ obj.username|capfirst }}
@@ -113,4 +114,7 @@
     </div>
 </div>
 {% include "includes/style.html" %}
+
+{% include "includes/tweet_form.html" %}
+
 {% endblock content %}

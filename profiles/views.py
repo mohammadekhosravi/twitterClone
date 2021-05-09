@@ -11,6 +11,7 @@ from .models import Contact
 
 from .forms import UserForm, ProfileForm
 from actions.utils import create_action
+from tweets.forms import TweetForm
 
 @login_required
 @transaction.atomic
@@ -36,15 +37,19 @@ def update_profile(request):
 
 @login_required
 def profile(request, username):
+    
     obj = get_object_or_404(get_user_model(), username=username)
     obj_profile = obj.profile
     book_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-    return render(request, 'profiles/profile.html', {
+    form = TweetForm()
+    context = {
         'obj': obj,
         'obj_profile': obj_profile,
         'book_list': book_list,
-    })
+        'form': form,
+    }
+
+    return render(request, 'profiles/profile.html', context)
 
 @login_required
 def profile_following(request, username):
