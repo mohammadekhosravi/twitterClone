@@ -50,6 +50,9 @@ INSTALLED_APPS = [
 
     # For user profiles
     'profiles.apps.ProfilesConfig',
+
+    # For activity stream
+    'actions.apps.ActionsConfig',
 ]
 
 MIDDLEWARE = [

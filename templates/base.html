@@ -13,7 +13,6 @@
     <link rel="icon" href="{% static "favicon.ico" %}">
 
     <!-- Custom js -->
-    <script src="{% static 'js/base.js' %}" defer></script>
     {% block scripts %}
     {% endblock scripts %}
     {% block head %}
@@ -45,6 +44,20 @@
     {% block content %}
     {% endblock content %}
 
+    <script>
+      function closeAlert(event){
+              let element = event.target;
+              while(element.nodeName !== "BUTTON"){
+                      element = element.parentNode;
+                    }
+              element.parentNode.parentNode.removeChild(element.parentNode);
+            }
+
+      function toggleNavbar(collapseID){
+              document.getElementById(collapseID).classList.toggle("hidden");
+              document.getElementById(collapseID).classList.toggle("flex");
+            }
+    </script>
     <script src="https://kit.fontawesome.com/faa629c1cc.js" crossorigin="anonymous"></script>
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

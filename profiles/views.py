@@ -10,6 +10,7 @@ from common.decorators import ajax_required
 from .models import Contact
 
 from .forms import UserForm, ProfileForm
+from actions.utils import create_action
 
 @login_required
 @transaction.atomic
@@ -79,6 +80,7 @@ def user_follow(request):
                     user_from=request.user,
                     user_to=user
                 ) 
+                create_action(request.user, 'is following', user)
             else:
                 Contact.objects.filter(user_from=request.user,
                 user_to=user).delete()
@@ -91,4 +93,3 @@ def user_follow(request):
         except get_user_model().DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error'})
-                    

@@ -5,6 +5,10 @@ const url = followBtn.getAttribute("data-url");
 const csrf = document.getElementsByName('csrfmiddlewaretoken');
 let followersCount = document.getElementById("fuck");
 
+function goBack() {
+    window.history.back();
+}
+
 
 const getCookie =(name) => {
     let cookieValue = null;
