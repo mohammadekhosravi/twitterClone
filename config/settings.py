@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'allauth.account',
     # For widget tweaking
     'widget_tweaks',
+    # For debugging
+    'debug_toolbar',
 
     # LOCAL
 
@@ -63,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # For debug_toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -173,3 +177,9 @@ ACCOUNT_SESSION_REMEMBER = True
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('profile', args=[u.username])
 }
+#---------------------------------------------------------------------------------
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

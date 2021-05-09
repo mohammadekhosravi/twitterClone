@@ -11,5 +11,7 @@ def notifications(request):
     target_ct_user = ContentType.objects.get_for_model(get_user_model())
     follow_notifications = Action.objects.exclude(user=request.user).filter(target_ct=target_ct_user,
                                                                target_id=request.user.id)
+    follow_notifications = follow_notifications.select_related('user', 'user__profile')\
+            .prefetch_related('target')
 
     return render(request, 'actions/notifications.html', {'follow_notifications': follow_notifications})
