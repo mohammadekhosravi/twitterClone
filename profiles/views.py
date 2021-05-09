@@ -36,12 +36,13 @@ def update_profile(request):
 
 @login_required
 def profile(request, username):
-    obj = get_object_or_404(get_user_model(),
-                            username=username)
+    obj = get_object_or_404(get_user_model(), username=username)
+    obj_profile = obj.profile
     book_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     return render(request, 'profiles/profile.html', {
         'obj': obj,
+        'obj_profile': obj_profile,
         'book_list': book_list,
     })
 
@@ -49,21 +50,25 @@ def profile(request, username):
 def profile_following(request, username):
     obj = get_object_or_404(get_user_model(),
                             username=username)
-    following = obj.following.all()
+    following = obj.following.all().select_related('profile')
+    request_user_following = request.user.following.all()
 
     return render(request, 'profiles/following.html', {
         'obj': obj,
-        'following': following
+        'following': following,
+        'request_user_following': request_user_following,
     })
 
 def profile_followers(request, username):
     obj = get_object_or_404(get_user_model(),
                             username=username)
-    followers = obj.followers.all()
+    followers = obj.followers.all().select_related('profile')
+    request_user_following = request.user.following.all()
 
     return render(request, 'profiles/followers.html', {
         'obj': obj,
         'followers': followers,
+        'request_user_following': request_user_following,
     })
 
 @ajax_required
