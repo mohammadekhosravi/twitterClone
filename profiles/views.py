@@ -12,6 +12,7 @@ from .models import Contact
 from .forms import UserForm, ProfileForm
 from actions.utils import create_action
 from tweets.forms import TweetForm
+from tweets.models import Tweet
 
 @login_required
 @transaction.atomic
@@ -40,12 +41,12 @@ def profile(request, username):
     
     obj = get_object_or_404(get_user_model(), username=username)
     obj_profile = obj.profile
-    book_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    all_tweets = obj.tweets.all()
     form = TweetForm()
     context = {
         'obj': obj,
         'obj_profile': obj_profile,
-        'book_list': book_list,
+        'all_tweets': all_tweets,
         'form': form,
     }
 
