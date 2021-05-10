@@ -5,7 +5,7 @@ class Tweet(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='tweets',
                                on_delete=models.CASCADE)
-    body = models.CharField(max_length=280)
+    body = models.CharField(max_length=280, verbose_name="tweet")
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                  related_name='tweets_liked',
                                  blank=True)
@@ -30,7 +30,7 @@ class Mention(models.Model):
     tweet = models.ForeignKey(Tweet,
                               related_name='mentions',
                               on_delete=models.CASCADE)
-    body = models.CharField(max_length=280)
+    mention = models.CharField(max_length=280, verbose_name="mention")
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                  related_name='mentions_liked',
                                  blank=True)
@@ -41,7 +41,7 @@ class Mention(models.Model):
         ordering = ('-created',)
 
     def __str__(self):
-        return f'{self.author.username} mention to {self.tweet.body[:10]} with {self.body[:10]}'
+        return f'{self.author.username} mention to {self.tweet.body[:10]} with {self.mention[:10]}'
 
     @property
     def like_count(self):
