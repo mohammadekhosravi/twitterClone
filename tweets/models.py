@@ -9,7 +9,7 @@ class Tweet(models.Model):
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                  related_name='tweets_liked',
                                  blank=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -34,7 +34,7 @@ class Mention(models.Model):
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                  related_name='mentions_liked',
                                  blank=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
