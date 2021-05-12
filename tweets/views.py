@@ -52,7 +52,8 @@ def create_mention(request, tweet_id):
 def tweet_detail(request, pk):
     original_tweet = Tweet.objects.get(id=pk)
     mentions = original_tweet.mentions.all()
-    mentions = mentions.select_related('author', 'author__profile')
+    mentions = mentions.select_related('author', 'author__profile')\
+            .prefetch_related('users_like')
     context = {'form': TweetForm(),
                'mention_form': MentionForm(),
                'original_tweet': original_tweet,
@@ -63,3 +64,20 @@ def tweet_detail(request, pk):
     # original_tweet = original_tweet.select_related('author', 'author__profile')
 
     return render(request, 'tweets/detail.html', context)
+
+@ajax_required
+@login_required
+def like_unlike(request):
+    pk = request.POST.get('pk')
+    like_type = request.POST.get('type')
+    # determine that like is for mention or tweet
+    if like_type == 'tweet':
+        tweet = Tweet.objects.get(pk=pk)
+    else:
+        tweet  = Mention.objects.get(pk=pk)
+
+    if request.user in tweet.users_like.all():
+        tweet.users_like.remove(request.user)
+    else:
+        tweet.users_like.add(request.user)
+    return JsonResponse({'like_count': tweet.like_count})

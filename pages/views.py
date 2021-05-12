@@ -23,7 +23,8 @@ def homepage(request):
     following_tweets = Tweet.objects.filter(author_id__in=following_ids)
     user_tweets = Tweet.objects.filter(author_id=request.user.id)
     all_tweets = following_tweets | user_tweets
-    all_tweets = all_tweets.select_related('author', 'author__profile',).prefetch_related('mentions')
+    all_tweets = all_tweets.select_related('author', 'author__profile',)\
+            .prefetch_related('mentions', 'users_like')
 
     context = {
         'form': form,

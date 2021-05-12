@@ -42,13 +42,14 @@ def profile(request, username):
     obj = get_object_or_404(get_user_model(), username=username)
     obj_profile = obj.profile
     all_tweets = obj.tweets.all().select_related('author', 'author__profile')\
-            .prefetch_related('mentions')
+            .prefetch_related('mentions', 'users_like')
     form = TweetForm()
     context = {
         'obj': obj,
         'obj_profile': obj_profile,
         'all_tweets': all_tweets,
         'form': form,
+        'tweet_and_mention_count': all_tweets.count() + obj.mentions.all().count()
     }
 
     return render(request, 'profiles/profile.html', context)

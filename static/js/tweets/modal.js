@@ -8,8 +8,54 @@ const mentionBtn = document.getElementById('mention-button');
 const mention = document.getElementById('id_mention');
 const mentionForm = document.getElementById('mention-form');
 const submitMentionBtn = document.getElementById('mention-submit');
-const tweetURL = mentionForm.getAttribute('data-tweet');
+if(mentionForm !== null) {
+    const tweetURL = mentionForm.getAttribute('data-tweet');
+    // For mention
+    mentionBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleModal('mention-modal');
+    })
 
+    submitMentionBtn.addEventListener('click', function(e) {
+        e.preventDefault;
+        
+        $.ajax({
+            type: 'POST',
+            url: `/compose/${tweetURL}/mention/`,
+            data: {
+                'csrfmiddlewaretoken': csrf_token[0].value,
+                'mention': mention.value,
+            },
+            success: function(response) {
+                toggleModal('mention-modal');
+                tweetForm.reset();
+            },
+            error: function(error) {
+                alert("Oops something went wrong!");
+            }
+        })
+    })
+}
+// ----------------------------------------------------------------
+let likeUnlikeForms = document.getElementsByClassName('like-unlike');
+likeUnlikeForms = Array.from(likeUnlikeForms);
+
+const getCookieModal =(name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrfToken = getCookieModal('csrftoken');
 
 // For tweet
 tweetBtn.addEventListener('click', function(e){
@@ -44,28 +90,29 @@ function toggleModal(modalID){
     document.getElementById(modalID + "-backdrop").classList.toggle("flex");
 }
 
-// For mention
-mentionBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    toggleModal('mention-modal');
-})
 
-submitMentionBtn.addEventListener('click', function(e) {
-    e.preventDefault;
-    
+// For like button
+likeUnlikeForms.forEach(form => form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const clickedId = e.target.getAttribute('data-like-id');
+    const clickedBtn = document.getElementById(`like-unlike-${clickedId}`);
+    const clickedType = e.target.getAttribute('data-type');
+
     $.ajax({
         type: 'POST',
-        url: `/compose/${tweetURL}/mention/`,
+        url: "/compose/like-unlike/",
         data: {
-            'csrfmiddlewaretoken': csrf_token[0].value,
-            'mention': mention.value,
+            'csrfmiddlewaretoken': csrfToken,
+            'pk': clickedId,
+            'type': clickedType,
         },
         success: function(response) {
-            toggleModal('mention-modal');
-            tweetForm.reset();
+            clickedBtn.classList.toggle('text-red-800');
+            clickedBtn.nextElementSibling.innerHTML = response.like_count;
         },
         error: function(error) {
-            alert("Oops something went wrong!");
-        }
+            alert('Oops! something went wrong!');
+        },
+
     })
-})
+}))
