@@ -21,16 +21,12 @@
                 </div>
               </aside>
               <hr class="border-gray-800">
-              <!-- following list -->
               {% for follow_notification in follow_notifications %}
-              <a href="{% url "profile" username=follow_notification.user.username %}">
               <div class="flex rounded-lg bg-dim-700 overflow-hidden shadow-lg m-1">
-                <div class="flex-1 ">
-                  <div class="flex items-center w-48 pb-2">
-                    <div>
-                      <img class="inline-block h-10 w-10 rounded-full ml-4 mt-3" src="{{ follow_notification.user.profile.avatar.url }}" alt="">
-                    </div>
-                    <div class="ml-3 mt-3">
+                <a class="flex-1" href="{% url "profile" username=follow_notification.user.username %}">
+                  <div class="flex">
+                    <img class="inline-block h-10 w-10 rounded-full ml-4 my-5" src="{{ follow_notification.user.profile.avatar.url }}" alt="">
+                    <div class="pl-4 py-4">
                       <p class="text-base leading-6 font-medium text-white">
                       {{ follow_notification.user.first_name|default:follow_notification.user.username }}
                       </p>
@@ -39,8 +35,12 @@
                       </p>
                     </div>
                   </div>
-                </div>
                 </a>
+                <div class="flex-1">
+                  <p class="py-6 pl-32 text-base leading-6 font-medium text-white">
+                    {{ follow_notification.created|timesince }} ago
+                  </p>
+                </div>
               </div>
               {% endfor %}
                 <!-- HERE -->
