@@ -8,7 +8,7 @@ class Action(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='actions',
                              on_delete=models.CASCADE)
-    verb = models.CharField(max_length=255)
+    verb = models.CharField(max_length=280)
     target_ct = models.ForeignKey(ContentType,
                                   blank=True,
                                   null=True,

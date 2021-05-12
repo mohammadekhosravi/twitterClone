@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from .models import Tweet, Mention
 from .forms import TweetForm, MentionForm
 from common.decorators import ajax_required
+from actions.utils import create_action
 
 @ajax_required
 @require_POST
@@ -34,11 +35,13 @@ def create_mention(request, tweet_id):
     if form.is_valid():
         author = get_user_model().objects.get(username=request.user.username)
         tweet = Tweet.objects.get(id=tweet_id)
+        user = tweet.author
         instance = form.save(commit=False)
         instance.author = author
         instance.tweet = tweet
         instance.save()
 
+        create_action(request.user, instance.mention, tweet)
         return JsonResponse({
             'status': 'ok'
         })
@@ -73,11 +76,14 @@ def like_unlike(request):
     # determine that like is for mention or tweet
     if like_type == 'tweet':
         tweet = Tweet.objects.get(pk=pk)
+        action_verb = 'like tweet'
     else:
         tweet  = Mention.objects.get(pk=pk)
+        action_verb = 'like mention'
 
     if request.user in tweet.users_like.all():
         tweet.users_like.remove(request.user)
     else:
         tweet.users_like.add(request.user)
+        create_action(request.user, action_verb, tweet)
     return JsonResponse({'like_count': tweet.like_count})
