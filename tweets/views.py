@@ -51,11 +51,15 @@ def create_mention(request, tweet_id):
 @login_required
 def tweet_detail(request, pk):
     original_tweet = Tweet.objects.get(id=pk)
+    mentions = original_tweet.mentions.all()
+    mentions = mentions.select_related('author', 'author__profile')
     context = {'form': TweetForm(),
                'mention_form': MentionForm(),
                'original_tweet': original_tweet,
                'original_tweet_author': original_tweet.author,
-               'original_tweet_author_profile': original_tweet.author.profile}
+               'original_tweet_author_profile': original_tweet.author.profile,
+               'mentions': mentions,
+              }
     # original_tweet = original_tweet.select_related('author', 'author__profile')
 
     return render(request, 'tweets/detail.html', context)
