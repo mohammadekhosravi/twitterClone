@@ -21,16 +21,13 @@
                 </div>
               </aside>
               <hr class="border-gray-800">
-              <!-- following list -->
+              <!-- FOLLOW -->
               {% for follow_notification in follow_notifications %}
-              <a href="{% url "profile" username=follow_notification.user.username %}">
               <div class="flex rounded-lg bg-dim-700 overflow-hidden shadow-lg m-1">
-                <div class="flex-1 ">
-                  <div class="flex items-center w-48 pb-2">
-                    <div>
-                      <img class="inline-block h-10 w-10 rounded-full ml-4 mt-3" src="{{ follow_notification.user.profile.avatar.url }}" alt="">
-                    </div>
-                    <div class="ml-3 mt-3">
+                <a class="flex-1" href="{% url "profile" username=follow_notification.user.username %}">
+                  <div class="flex">
+                    <img class="inline-block h-10 w-10 rounded-full ml-4 my-5" src="{{ follow_notification.user.profile.avatar.url }}" alt="">
+                    <div class="pl-4 py-4">
                       <p class="text-base leading-6 font-medium text-white">
                       {{ follow_notification.user.first_name|default:follow_notification.user.username }}
                       </p>
@@ -39,9 +36,118 @@
                       </p>
                     </div>
                   </div>
-                </div>
                 </a>
+                <div class="flex-1">
+                  <p class="py-6 pl-32 text-base leading-6 font-medium text-white">
+                    {{ follow_notification.created|timesince }} ago
+                  </p>
+                </div>
               </div>
+              {% endfor %}
+              <!-- MENTION -->
+              {% for mention_notification in mention_notifications %}
+                <div class="bg-dim-700 flex items-center justify-center px-2 py-2">
+                  <div class="w-full mx-auto rounded-lg bg-dim-700 shadow p-5 text-white">
+                    <div class="w-full mb-4 bg-indigo-600 rounded-lg">
+                      <p class="p-4 text-base leading-6 font-medium text-white">
+                      @{{ mention_notification.user.username }} mention to your 
+                      <span class="text-xs font-semibold inline-block py-1 px-1 uppercase rounded text-purple-600 bg-purple-200 uppercase last:mr-0 mr-1">
+                        <a href="{% url "tweet_detail" mention_notification.target_id %}">
+                          tweet
+                        </a>
+                      </span>
+                      with:
+                      </p>
+                    </div>
+                    
+                    <div class="w-full flex mb-4">
+                      <div class="overflow-hidden rounded-full w-10 h-10">
+                        <img src="{{ mention_notification.user.profile.avatar.url }}"/>
+                      </div>
+                      <div class="flex-grow pl-3">
+                        <h6 class="font-bold text-md">{{ mention_notification.user.first_name|default:mention_notification.user.username }}</h6>
+                        <p class="text-xs text-white">@{{ mention_notification.user.username }}</p>
+                      </div>
+                      <div class="text-right">
+                        <p>{{ mention_notification.created|timesince }} ago</p>
+                      </div>
+                    </div>
+                    <div class="w-full mb-4">
+                      <p class="text-sm">
+                      {{ mention_notification.verb }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <!-- LIKE TWEET -->
+              {% for like_tweet_notification in like_tweet_notifications %}
+                <div class="bg-dim-700 flex items-center justify-center px-2 py-2">
+                  <div class="w-full mx-auto rounded-lg bg-dim-700 shadow p-5 text-white">
+                    <div class="w-full mb-4 bg-indigo-600 rounded-lg">
+                      <p class="p-4 text-base leading-6 font-medium text-white">
+                      @{{ like_tweet_notification.user.username }} like your
+                      <span class="text-xs font-semibold inline-block py-1 px-1 uppercase rounded text-purple-600 bg-purple-200 uppercase last:mr-0 mr-1">
+                        <a href="{% url "tweet_detail" like_tweet_notification.target_id %}">
+                          tweet
+                        </a>
+                      </span>
+                      </p>
+                    </div>
+                    
+                    <div class="w-full flex mb-4">
+                      <div class="overflow-hidden rounded-full w-10 h-10">
+                        <img src="{{ like_tweet_notification.target.author.profile.avatar.url }}"/>
+                      </div>
+                      <div class="flex-grow pl-3">
+                        <h6 class="font-bold text-md">{{ like_tweet_notification.target.author.first_name|default:like_tweet_notification.target.author.username }}</h6>
+                        <p class="text-xs text-white">@{{ like_tweet_notification.target.author.username }}</p>
+                      </div>
+                      <div class="text-right">
+                        <p>{{ like_tweet_notification.created|timesince }} ago</p>
+                      </div>
+                    </div>
+                    <div class="w-full mb-4">
+                      <p class="text-sm">
+                      {{ like_tweet_notification.target.body }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <!-- LIKE MENTIONS -->
+              {% for like_mention_notification in like_mention_notifications %}
+                <div class="bg-dim-700 flex items-center justify-center px-2 py-2">
+                  <div class="w-full mx-auto rounded-lg bg-dim-700 shadow p-5 text-white">
+                    <div class="w-full mb-4 bg-indigo-600 rounded-lg">
+                      <p class="p-4 text-base leading-6 font-medium text-white">
+                      @{{ like_mention_notification.user.username }} like your
+                      <span class="text-xs font-semibold inline-block py-1 px-1 uppercase rounded text-purple-600 bg-purple-200 uppercase last:mr-0 mr-1">
+                        <a href="{% url "tweet_detail" like_mention_notification.target.tweet.id %}">
+                          Mention
+                        </a>
+                      </span>
+                    </div>
+                    
+                    <div class="w-full flex mb-4">
+                      <div class="overflow-hidden rounded-full w-10 h-10">
+                        <img src="{{ like_mention_notification.target.author.profile.avatar.url }}"/>
+                      </div>
+                      <div class="flex-grow pl-3">
+                        <h6 class="font-bold text-md">{{ like_mention_notification.target.author.first_name|default:like_mention_notification.target.author.username }}</h6>
+                        <p class="text-xs text-white">@{{ like_mention_notification.target.author.username }}</p>
+                      </div>
+                      <div class="text-right">
+                        <p>{{ like_mention_notification.created|timesince }} ago</p>
+                      </div>
+                    </div>
+                    <div class="w-full mb-4">
+                      <p class="text-sm">
+                      {{ like_mention_notification.target.mention }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               {% endfor %}
                 <!-- HERE -->
                 </section>

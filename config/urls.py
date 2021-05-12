@@ -23,6 +23,9 @@ urlpatterns = [
     # Pages app
     path('', include('pages.urls')),
 
+    # Tweet stuff
+    path('compose/', include('tweets.urls')),
+
 ]
 
 if settings.DEBUG:

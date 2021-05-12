@@ -1,5 +1,10 @@
 from django.views.generic.base import RedirectView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from tweets.forms import TweetForm
+from tweets.models import Tweet, Mention
 
 
 class HomeRedirectView(RedirectView):
@@ -7,16 +12,23 @@ class HomeRedirectView(RedirectView):
     pattern_name = 'home'
 
 
-class HomePageView(LoginRequiredMixin, TemplateView):
-    template_name = 'home.html'
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(HomePageView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['book_list'] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-        return context
-
-
 class AboutPageView(LoginRequiredMixin, TemplateView):
     template_name = 'about.html'
+
+
+@login_required
+def homepage(request):
+    form = TweetForm()
+    following_ids = request.user.following.values_list('id', flat=True)
+    following_tweets = Tweet.objects.filter(author_id__in=following_ids)
+    user_tweets = Tweet.objects.filter(author_id=request.user.id)
+    all_tweets = following_tweets | user_tweets
+    all_tweets = all_tweets.select_related('author', 'author__profile',)\
+            .prefetch_related('mentions', 'users_like')
+
+    context = {
+        'form': form,
+        'all_tweets': all_tweets,
+    }
+
+    return render(request, 'home.html', context)

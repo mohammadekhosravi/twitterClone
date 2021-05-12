@@ -8,7 +8,7 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to='users/avatars/', default='avatar.png')
     header = models.ImageField(upload_to='users/headers/', default='header.jpg')
     bio = models.CharField(max_length= 240, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:

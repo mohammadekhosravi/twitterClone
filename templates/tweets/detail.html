@@ -17,7 +17,7 @@
               <aside>
                 <div class="flex">
                   <div class="flex-1 mx-2">
-                    <h2 class="px-4 py-2 text-xl font-semibold text-white">Home</h2>
+                    <h2 class="px-4 py-2 text-xl font-semibold text-white">Tweet</h2>
                   </div>
                   <div class="flex-1 px-4 py-2 mx-2">
                     <a href="" class=" text-2xl font-medium rounded-full text-white hover:bg-gray-800 hover:text-blue-300 float-right">
@@ -34,46 +34,109 @@
               </aside>
 
               <ul class="list-none">
-                {% for tweet in all_tweets %}
                 <li>
                   <!--tweet-->
                   <article class="hover:bg-gray-800 transition duration-350 ease-in-out">
                     <div class="flex flex-shrink-0 p-4 pb-0">
-                      <a href="{% url "profile" tweet.author.username %}" class="flex-shrink-0 group block">
+                      <div class="flex-shrink-0 group block">
                         <div class="flex items-center">
                           <div>
-                            <img class="inline-block h-10 w-10 rounded-full" src="{{ tweet.author.profile.avatar.url }}" alt="">
+                            <img class="inline-block h-10 w-10 rounded-full" src="{{ original_tweet_author_profile.avatar.url }}" alt="">
                           </div>
                           <div class="ml-3">
                             <p class="text-base leading-6 font-medium text-white">
-                            {{ tweet.author.get_full_name|default:tweet.author.username|capfirst }}
+                            {{ original_tweet_author.get_full_name|default:original_tweet_author.username|capfirst }}
                             <span class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                              @{{ tweet.author.username }}  . {{ tweet.created|timesince }}
+                              @{{ original_tweet_author.username }}  . {{ original_tweet.created|timesince }}
                             </span>
                             </p>
                           </div>
                         </div>
-                      </a>
+                      </div>
                     </div>
                     <div class="pl-16">
-                      <a href="{% url "tweet_detail" tweet.id %}">
                       <p class="text-base width-auto font-small text-white flex-shrink">
-                      {{ tweet.body }}
+                      {{ original_tweet.body }}
                       </p>
-                      </a>
                       <!-- <div class="md:flex-shrink pr-6 pt-3"> -->
                       <!--   <div class="bg-cover bg-no-repeat bg-center rounded-lg w-full h-64" style="height: 200px; background-image: url(https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=448&amp;q=80);"> -->
                       <!--     <img class="opacity-0 w-full h-full" src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=448&amp;q=80" alt=""> -->
                       <!--   </div> -->
                       <!-- </div> -->
                       <div class="flex items-center py-4 pl-12">
-                        <div class="flex-1 flex items-center text-white text-xs text-gray-400 hover:text-blue-400 transition duration-350 ease-in-out">
+                        <button id="mention-button" class="flex-1 flex items-center text-white text-xs text-gray-400 hover:text-blue-400 transition duration-350 ease-in-out">
                           <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
                             <g>
                             <path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path>
                             </g>
                           </svg>
-                          {{ tweet.mentions.all.count }}
+                          {{ original_tweet.mentions.all.count }}
+                        </button>
+                        <div class="flex-1 flex items-center text-white text-xs text-gray-400 hover:text-green-400 transition duration-350 ease-in-out">
+                          <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
+                            <g>
+                            <path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path>
+                            </g>
+                          </svg>
+                          0
+                        </div>
+                        <form class="like-unlike flex-1 flex items-center text-white text-xs hover:text-red-800 transition duration-350 ease-in-out" data-like-id="{{ original_tweet.id }}" data-type="tweet">
+                          <button id="like-unlike-{{ original_tweet.id }}" class="{% if user in original_tweet.users_like.all %} text-red-700 {% else %} text-white {% endif %}">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
+                              <g>
+                              <path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
+                              </g>
+                            </svg>
+                          </button>
+                          <div>
+                          {{ original_tweet.like_count }}
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <hr class="border-gray-800">
+                  </article>
+                </li>
+                <!-- mentions -->
+
+                <li>
+                  <!--mention-->
+                  {% for m in mentions %}
+                  <article class="hover:bg-gray-800 transition duration-350 ease-in-out">
+                    <div class="flex flex-shrink-0 p-4 pb-0">
+                      <div class="flex-shrink-0 group block">
+                        <div class="flex items-center">
+                          <div>
+                            <img class="inline-block h-10 w-10 rounded-full" src="{{ m.author.profile.avatar.url }}">
+                          </div>
+                          <div class="ml-3">
+                            <p class="text-base leading-6 font-medium text-white">
+                            {{ m.author.get_full_name|default:m.author.username|capfirst }}
+                            <span class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                              @{{ m.author.username }}  . {{ m.created|timesince }}
+                            </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pl-16">
+                      <p class="text-base width-auto font-small text-white flex-shrink">
+                      {{ m.mention }}
+                      </p>
+                      <!-- <div class="md:flex-shrink pr-6 pt-3"> -->
+                      <!--   <div class="bg-cover bg-no-repeat bg-center rounded-lg w-full h-64" style="height: 200px; background-image: url(https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=448&amp;q=80);"> -->
+                      <!--     <img class="opacity-0 w-full h-full" src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=448&amp;q=80" alt=""> -->
+                      <!--   </div> -->
+                      <!-- </div> -->
+                      <div class="flex items-center py-4 pl-12">
+                        <div  class="flex-1 flex items-center text-white text-xs text-gray-400 hover:text-blue-400 transition duration-350 ease-in-out">
+                          <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
+                            <g>
+                            <path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path>
+                            </g>
+                          </svg>
+                          0
                         </div>
                         <div class="flex-1 flex items-center text-white text-xs text-gray-400 hover:text-green-400 transition duration-350 ease-in-out">
                           <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
@@ -83,8 +146,9 @@
                           </svg>
                           0
                         </div>
-                        <form class="like-unlike flex-1 flex items-center text-white text-xs hover:text-red-800 transition duration-350 ease-in-out" data-like-id="{{ tweet.id }}" data-type="tweet">
-                          <button id="like-unlike-{{ tweet.id }}" class="{% if user in tweet.users_like.all %} text-red-700 {% else %} text-white {% endif %}">
+
+                        <form class="like-unlike flex-1 flex items-center text-white text-xs hover:text-red-800 transition duration-350 ease-in-out" data-like-id="{{ m.id }}" data-type="mention">
+                          <button id="like-unlike-{{ m.id }}" class="{% if user in m.users_like.all %} text-red-700 {% else %} text-white {% endif %}">
                             <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
                               <g>
                               <path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
@@ -92,7 +156,7 @@
                             </svg>
                           </button>
                           <div>
-                          {{ tweet.like_count }}
+                          {{ m.like_count }}
                           </div>
                         </form>
                       </div>
@@ -100,12 +164,6 @@
                     <hr class="border-gray-800">
                   </article>
                 </li>
-                {% empty %}
-                <div class="flex">
-                <h5 class="py-8 pl-36 justify-center items-center text-2xl font-normal leading-normal mt-0 mb-2 text-white">
-                  Nothing to show here.
-                </h5>
-                </div>
               {% endfor %}
               </ul>
               </section>
@@ -117,5 +175,6 @@
 {% include "includes/style.html" %}
 
 {% include "includes/tweet_form.html" %}
+{% include "includes/mention_form.html" %}
 
 {% endblock content %}
