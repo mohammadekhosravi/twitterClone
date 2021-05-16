@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -30,6 +30,31 @@ def create_tweet(request):
         'status': 'fucked'
     })
 
+# @ajax_required
+# @require_POST
+@login_required
+def delete_tweet(request):
+    pk = request.POST.get('pk')
+    # delete tweet
+    tweet = get_object_or_404(Tweet, pk=pk)
+    tweet.delete()
+    # go to profile page
+    obj = get_object_or_404(get_user_model(), username=request.user.username)
+    obj_profile = obj.profile
+    all_tweets = obj.tweets.all().select_related('author', 'author__profile')\
+            .prefetch_related('mentions', 'users_like')
+    form = TweetForm()
+    context = {
+        'obj': obj,
+        'obj_profile': obj_profile,
+        'all_tweets': all_tweets,
+        'form': form,
+        'tweet_and_mention_count': all_tweets.count() + obj.mentions.all().count()
+    }
+
+    return render(request, 'profiles/profile.html', context)
+
+
 @ajax_required
 @login_required
 def create_mention(request, tweet_id):
@@ -55,7 +80,7 @@ def create_mention(request, tweet_id):
 
 @login_required
 def tweet_detail(request, pk):
-    original_tweet = Tweet.objects.get(id=pk)
+    original_tweet = get_object_or_404(Tweet, id=pk)
     mentions = original_tweet.mentions.all()
     mentions = mentions.select_related('author', 'author__profile')\
             .prefetch_related('users_like')

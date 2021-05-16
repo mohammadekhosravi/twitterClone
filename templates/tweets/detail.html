@@ -92,6 +92,11 @@
                           {{ original_tweet.like_count }}
                           </div>
                         </form>
+                        {% if user == original_tweet_author %}
+                        <button id="delete-button" data-id="{{ original_tweet.id }}" class="flex-1 flex items-center text-white text-lg text-gray-400 hover:text-red-600 transition duration-350 ease-in-out">
+                          <i class="far fa-trash-alt w-5 h-5"></i>
+                        </button>
+                      {% endif %}
                       </div>
                     </div>
                     <hr class="border-gray-800">

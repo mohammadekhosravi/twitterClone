@@ -8,6 +8,9 @@ const mentionBtn = document.getElementById('mention-button');
 const mention = document.getElementById('id_mention');
 const mentionForm = document.getElementById('mention-form');
 const submitMentionBtn = document.getElementById('mention-submit');
+// -----------------------------------------------------------------
+const deleteBtn = document.getElementById('delete-button');
+
 if(mentionForm !== null) {
     const tweetURL = mentionForm.getAttribute('data-tweet');
     // For mention
@@ -116,3 +119,20 @@ likeUnlikeForms.forEach(form => form.addEventListener('submit', function(e) {
 
     })
 }))
+
+
+deleteBtn.addEventListener('click', function(e) {
+    const tweetId = deleteBtn.getAttribute('data-id');
+
+    $.ajax({
+        type: 'POST',
+        url: "/compose/delete/",
+        data: {
+            'csrfmiddlewaretoken': csrf_token[0].value,
+            'pk': tweetId,
+        },
+        error: function(error) {
+            alert('Oops! something went wrong!');
+        }
+    })
+})
