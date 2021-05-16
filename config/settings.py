@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    # For full-text search
+    'django.contrib.postgres',
 
     # 3RD PARTY
 
