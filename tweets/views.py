@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
+from django.contrib.postgres.search import SearchVector,\
+        SearchQuery, SearchRank
 
 from .models import Tweet, Mention
 from .forms import TweetForm, MentionForm
@@ -87,3 +89,26 @@ def like_unlike(request):
         tweet.users_like.add(request.user)
         create_action(request.user, action_verb, tweet)
     return JsonResponse({'like_count': tweet.like_count})
+
+@login_required
+def search(request):
+    form = TweetForm()
+    query = request.GET.get('search')
+
+    # Building search results include Stemming and ranking results
+    search_vector = SearchVector('body', weight='A')
+    search_query = SearchQuery(query)
+    results = Tweet.objects.annotate(
+        search=search_vector,
+        rank=SearchRank(search_vector, search_query)
+    ).filter(rank__gte=0.2).order_by('-rank')
+
+    # Fetch related models
+    results = results.select_related('author', 'author__profile',)\
+            .prefetch_related('mentions', 'users_like')
+
+    context = {'query': query,
+               'results': results,
+               'form': form,
+              }
+    return render(request, 'tweets/search.html', context)
