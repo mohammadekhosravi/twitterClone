@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -31,6 +31,18 @@ def create_tweet(request):
     })
 
 @ajax_required
+@require_POST
+@login_required
+def delete_tweet(request):
+    pk = request.POST.get('pk')
+    # delete tweet
+    tweet = get_object_or_404(Tweet, pk=pk)
+    tweet.delete()
+
+    return JsonResponse({'url': f'{request.user.username}'})
+
+
+@ajax_required
 @login_required
 def create_mention(request, tweet_id):
     form = MentionForm(request.POST)
@@ -48,14 +60,14 @@ def create_mention(request, tweet_id):
             'status': 'ok'
         })
     return JsonResponse({
-        'status': 'fucked'
+        'status': 'bad'
     })
 
 
 
 @login_required
 def tweet_detail(request, pk):
-    original_tweet = Tweet.objects.get(id=pk)
+    original_tweet = get_object_or_404(Tweet, id=pk)
     mentions = original_tweet.mentions.all()
     mentions = mentions.select_related('author', 'author__profile')\
             .prefetch_related('users_like')
