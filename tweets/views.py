@@ -30,29 +30,16 @@ def create_tweet(request):
         'status': 'fucked'
     })
 
-# @ajax_required
-# @require_POST
+@ajax_required
+@require_POST
 @login_required
 def delete_tweet(request):
     pk = request.POST.get('pk')
     # delete tweet
     tweet = get_object_or_404(Tweet, pk=pk)
     tweet.delete()
-    # go to profile page
-    obj = get_object_or_404(get_user_model(), username=request.user.username)
-    obj_profile = obj.profile
-    all_tweets = obj.tweets.all().select_related('author', 'author__profile')\
-            .prefetch_related('mentions', 'users_like')
-    form = TweetForm()
-    context = {
-        'obj': obj,
-        'obj_profile': obj_profile,
-        'all_tweets': all_tweets,
-        'form': form,
-        'tweet_and_mention_count': all_tweets.count() + obj.mentions.all().count()
-    }
 
-    return render(request, 'profiles/profile.html', context)
+    return JsonResponse({'url': f'{request.user.username}'})
 
 
 @ajax_required
@@ -73,7 +60,7 @@ def create_mention(request, tweet_id):
             'status': 'ok'
         })
     return JsonResponse({
-        'status': 'fucked'
+        'status': 'bad'
     })
 
 
