@@ -106,3 +106,7 @@ def user_follow(request):
         except get_user_model().DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error'})
+
+@login_required
+def who_to_follow(request):
+    pass
