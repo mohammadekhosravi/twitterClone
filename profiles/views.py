@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.db.models import Count
 # For AJAX
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -44,12 +45,13 @@ def profile(request, username):
     all_tweets = obj.tweets.all().select_related('author', 'author__profile')\
             .prefetch_related('mentions', 'users_like')
     form = TweetForm()
+
     context = {
         'obj': obj,
         'obj_profile': obj_profile,
         'all_tweets': all_tweets,
         'form': form,
-        'tweet_and_mention_count': all_tweets.count() + obj.mentions.all().count()
+        'tweet_and_mention_count': all_tweets.count() + obj.mentions.all().count(),
     }
 
     return render(request, 'profiles/profile.html', context)
