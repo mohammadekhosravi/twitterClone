@@ -33,20 +33,19 @@
                 <div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full p-4 mt-12 mr-2 cursor-pointer">
                   <div x-data="{ open: false }" class="">
                       <div @click="open = !open" :class="{'border-indigo-700 transform transition duration-300 ': open}" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100">
-
-                            <div class="flex items-center">
-                              <div>
-                                <img class="inline-block h-10 w-10 rounded-full" src="{{ user.profile.avatar.url }}" alt="" />
-                              </div>
-                              <div class="ml-3">
-                                <p class="text-base leading-6 font-medium text-white">
-                                {{ user.first_name|default:user.username|capfirst }}
-                                </p>
-                                <p class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                                @{{ user.username }}
-                                </p>
-                              </div>
-                            </div>
+                        <div class="flex items-center">
+                          <div>
+                            <img class="inline-block h-10 w-10 rounded-full" src="{{ user.profile.avatar.url }}" alt="" />
+                          </div>
+                          <div class="ml-3">
+                            <p class="text-base leading-6 font-medium text-white">
+                            {{ user.first_name|default:user.username|capfirst }}
+                            </p>
+                            <p class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                            @{{ user.username }}
+                            </p>
+                          </div>
+                        </div>
                         <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute w-60 px-5 py-3 bg-gray-700 rounded-lg shadow border dark:border-transparent mt-5">
                           <ul class="space-y-3 dark:text-white">
                             <li class="font-medium text-white">
