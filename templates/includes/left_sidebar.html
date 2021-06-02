@@ -30,6 +30,55 @@
                     </svg>
                     Profile
                 </a>
+                <div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full p-4 mt-12 mr-2 cursor-pointer">
+                  <div x-data="{ open: false }" class="">
+                      <div @click="open = !open" :class="{'border-indigo-700 transform transition duration-300 ': open}" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100">
+
+                            <div class="flex items-center">
+                              <div>
+                                <img class="inline-block h-10 w-10 rounded-full" src="{{ user.profile.avatar.url }}" alt="" />
+                              </div>
+                              <div class="ml-3">
+                                <p class="text-base leading-6 font-medium text-white">
+                                {{ user.first_name|default:user.username|capfirst }}
+                                </p>
+                                <p class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                                @{{ user.username }}
+                                </p>
+                              </div>
+                            </div>
+                        <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute w-60 px-5 py-3 bg-gray-700 rounded-lg shadow border dark:border-transparent mt-5">
+                          <ul class="space-y-3 dark:text-white">
+                            <li class="font-medium text-white">
+                              <a href="{% url "account_email" %}" class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-white">
+                                <div class="mr-3 text-lg text-blue-500">
+                                  <i class="fas fa-at"></i>
+                                </div>
+                                Email
+                              </a>
+                            </li>
+                            <li class="font-medium text-white">
+                              <a href="{% url "account_change_password" %}" class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-white">
+                                <div class="mr-3 text-lg">
+                                  <i class="fas fa-unlock"></i>
+                                </div>
+                                Change Password
+                              </a>
+                            </li>
+                            <hr class="dark:border-gray-700">
+                            <li class="font-medium text-red-600">
+                              <a href="{% url "account_logout" %}" class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-red-600">
+                                <div class="mr-3 text-red-600">
+                                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                </div>
+                                Logout
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                  </div>
+                </div>
                 <button id="create-tweet" class="bg-blue-400 hover:bg-blue-500 w-full mt-5 text-white font-bold py-2 px-4 rounded-full">
                     Tweet
                 </button>
@@ -37,3 +86,4 @@
         </div>
     </div>
 </header>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
