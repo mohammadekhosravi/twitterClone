@@ -87,6 +87,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Custom context processor for follow suggestion section on right sidebar of site.
+                'profiles.context_processors.follow_suggestion',
 
             ],
         },
